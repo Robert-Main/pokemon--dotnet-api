@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PokemonReviewApp.Models;
 
 namespace api.models
 {
@@ -11,6 +12,5 @@ namespace api.models
         public int OwnerId { get; set; }
         public Pokemon? Pokemon { get; set; }
         public Owner? Owner { get; set; }
-        
     }
 }
