@@ -1,0 +1,7 @@
+.env
+bin/
+obj/
+*.AssemblyInfo.cs
+*.AssemblyInfoInputs.cache
+.freebuff/desktop-v2.db
+.freebuff/desktop-v2.db-wal
