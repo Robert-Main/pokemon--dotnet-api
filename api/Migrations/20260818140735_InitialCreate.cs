@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace api.Migrations
 {
     /// <inheritdoc />
-    public partial class initisCreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -53,7 +53,7 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reviews",
+                name: "Reviewers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -63,7 +63,7 @@ namespace api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.PrimaryKey("PK_Reviewers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -112,7 +112,7 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Review",
+                name: "Reviews",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -125,16 +125,16 @@ namespace api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Review", x => x.Id);
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Review_Pokemons_PokemonId",
+                        name: "FK_Reviews_Pokemons_PokemonId",
                         column: x => x.PokemonId,
                         principalTable: "Pokemons",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Review_Reviews_ReviewerId",
+                        name: "FK_Reviews_Reviewers_ReviewerId",
                         column: x => x.ReviewerId,
-                        principalTable: "Reviews",
+                        principalTable: "Reviewers",
                         principalColumn: "Id");
                 });
 
@@ -178,13 +178,13 @@ namespace api.Migrations
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Review_PokemonId",
-                table: "Review",
+                name: "IX_Reviews_PokemonId",
+                table: "Reviews",
                 column: "PokemonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Review_ReviewerId",
-                table: "Review",
+                name: "IX_Reviews_ReviewerId",
+                table: "Reviews",
                 column: "ReviewerId");
         }
 
@@ -198,7 +198,7 @@ namespace api.Migrations
                 name: "PokemonOwners");
 
             migrationBuilder.DropTable(
-                name: "Review");
+                name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "Categories");
@@ -210,7 +210,7 @@ namespace api.Migrations
                 name: "Pokemons");
 
             migrationBuilder.DropTable(
-                name: "Reviews");
+                name: "Reviewers");
 
             migrationBuilder.DropTable(
                 name: "Countries");

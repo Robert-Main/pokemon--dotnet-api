@@ -1,6 +1,5 @@
 using api.Data;
 using api.models;
-using PokemonReviewApp.Models;
 
 namespace PokemonReviewApp
 {

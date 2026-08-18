@@ -5,7 +5,6 @@ using System.Reflection.Emit;
 using System.Threading.Tasks;
 using api.models;
 using Microsoft.EntityFrameworkCore;
-using PokemonReviewApp.Models;
 
 namespace api.Data
 {
@@ -16,7 +15,8 @@ namespace api.Data
         }
 
         public DbSet<Pokemon> Pokemons { get; set; }
-        public DbSet<Reviewer> Reviews { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<Reviewer> Reviewers { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Owner> Owners { get; set; }
@@ -25,6 +25,15 @@ namespace api.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.Reviewer)
+                .WithMany(rev => rev.Reviews)
+                .HasForeignKey(r => r.ReviewerId);
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.Pokemon)
+                .WithMany(p => p.Reviews)
+                .HasForeignKey(r => r.PokemonId);
+
             modelBuilder.Entity<PokemonCategory>()
                 .HasKey(pc => new { pc.PokemonId, pc.CategoryId });
             modelBuilder.Entity<PokemonCategory>()
