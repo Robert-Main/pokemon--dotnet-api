@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos;
 using api.Interfaces;
 using api.models;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Repositories
@@ -13,9 +13,11 @@ namespace api.Repositories
     public class PokemonRepository : IPokemonInterface
     {
         private readonly DataContext _context;
-        public PokemonRepository(DataContext context)
+        private readonly IMapper _mapper;
+        public PokemonRepository(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<bool?> DeletePokemon(int id)
@@ -39,40 +41,14 @@ namespace api.Repositories
                 .ThenInclude(r => r.Reviewer)
                 .Include(p => p.PokemonCategories)
                 .ThenInclude(pc => pc.Category)
+                .Include(p => p.PokemonOwners)
+                .ThenInclude(po => po.Owner)
                 .FirstOrDefaultAsync(p => p.Id == id);
             if (pokemon == null)
             {
                 return null;
             }
-            return new PokemonResponseDtos
-            {
-                Id = pokemon.Id,
-                Name = pokemon.Name,
-                BirthDate = pokemon.BirthDate,
-                CreatedAt = pokemon.CreatedAt,
-                Reviews = pokemon.Reviews?.Select(r => new ReviewResponseDtos
-                {
-                    Id = r.Id,
-                    Title = r.Title,
-                    Text = r.Text,
-                    Rating = r.Rating,
-                    Reviewer = r.Reviewer != null ? new api.Dtos.Reviewer
-                    {
-                        Id = r.Reviewer.Id,
-                        FirstName = r.Reviewer.FirstName,
-                        LastName = r.Reviewer.LastName
-                    } : null
-                }).ToList(),
-                PokemonCategories = pokemon.PokemonCategories?.Select(pc => new PokemonCategoryResponseDtos
-                {
-                    CategoryId = pc.CategoryId,
-                    Category = pc.Category != null ? new api.Dtos.Category
-                    {
-                        Id = pc.Category.Id,
-                        Name = pc.Category.Name
-                    } : null
-                }).ToList()
-            };
+            return _mapper.Map<PokemonResponseDtos>(pokemon);
         }
 
         public async Task<IEnumerable<PokemonResponseDtos>> ListAllPokemons()
@@ -82,37 +58,11 @@ namespace api.Repositories
                 .ThenInclude(r => r.Reviewer)
                 .Include(p => p.PokemonCategories)
                 .ThenInclude(pc => pc.Category)
+                .Include(p => p.PokemonOwners)
+                .ThenInclude(po => po.Owner)
                 .ToListAsync();
 
-            return pokemons.Select(p => new PokemonResponseDtos
-            {
-                Id = p.Id,
-                Name = p.Name,
-                BirthDate = p.BirthDate,
-                CreatedAt = p.CreatedAt,
-                Reviews = p.Reviews?.Select(r => new ReviewResponseDtos
-                {
-                    Id = r.Id,
-                    Title = r.Title,
-                    Text = r.Text,
-                    Rating = r.Rating,
-                    Reviewer = r.Reviewer != null ? new api.Dtos.Reviewer
-                    {
-                        Id = r.Reviewer.Id,
-                        FirstName = r.Reviewer.FirstName,
-                        LastName = r.Reviewer.LastName
-                    } : null
-                }).ToList(),
-                PokemonCategories = p.PokemonCategories?.Select(pc => new PokemonCategoryResponseDtos
-                {
-                    CategoryId = pc.CategoryId,
-                    Category = pc.Category != null ? new api.Dtos.Category
-                    {
-                        Id = pc.Category.Id,
-                        Name = pc.Category.Name
-                    } : null
-                }).ToList()
-            }).ToList();
+            return _mapper.Map<IEnumerable<PokemonResponseDtos>>(pokemons);
         }
 
         public async Task<PokemonDtos?> UpdatePokemon(int id, PokemonDtos pokemon)
@@ -123,38 +73,20 @@ namespace api.Repositories
                 return null;
             }
 
-            existingPokemon.Name = pokemon.Name;
-            existingPokemon.BirthDate = pokemon.BirthDate;
-            existingPokemon.CreatedAt = pokemon.CreatedAt;
+            _mapper.Map(pokemon, existingPokemon);
 
             await _context.SaveChangesAsync();
 
-            return new PokemonDtos
-            {
-                Id = existingPokemon.Id,
-                Name = existingPokemon.Name,
-                BirthDate = existingPokemon.BirthDate,
-                CreatedAt = existingPokemon.CreatedAt
-            };
+            return _mapper.Map<PokemonDtos>(existingPokemon);
         }
 
         public async Task<PokemonDtos?> CreatePokemon(PokemonCreateDtos pokemon)
         {
-            var newPokemon = new Pokemon
-            {
-                Name = pokemon.Name,
-                BirthDate = pokemon.BirthDate,
-                CreatedAt = DateTime.UtcNow
-            };
+            var newPokemon = _mapper.Map<Pokemon>(pokemon);
+            newPokemon.CreatedAt = DateTime.UtcNow;
             _context.Pokemons.Add(newPokemon);
             await _context.SaveChangesAsync();
-            return new PokemonDtos
-            {
-                Id = newPokemon.Id,
-                Name = newPokemon.Name,
-                BirthDate = newPokemon.BirthDate,
-                CreatedAt = newPokemon.CreatedAt
-            };
+            return _mapper.Map<PokemonDtos>(newPokemon);
         }
     }
 }

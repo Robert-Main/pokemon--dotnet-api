@@ -9,5 +9,6 @@ namespace api.Dtos
     {
         public List<ReviewResponseDtos>? Reviews { get; set; }
         public List<PokemonCategoryResponseDtos>? PokemonCategories { get; set; }
+        public List<PokemonOwnerResponseDtos>? PokemonOwners { get; set; }
     }
 }

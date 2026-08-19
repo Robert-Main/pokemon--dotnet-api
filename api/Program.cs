@@ -1,5 +1,6 @@
 
 using api.Data;
+using api.Mapping;
 using Microsoft.EntityFrameworkCore;
 using PokemonReviewApp;
 using Scalar.AspNetCore;
@@ -10,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
+builder.Services.AddAutoMapper(typeof(PokemonProfile));
 builder.Services.AddOpenApi(options =>
 {
     options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
@@ -18,6 +20,11 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddTransient<Seed>();
 builder.Services.AddScoped<api.Interfaces.IPokemonInterface, api.Repositories.PokemonRepository>();
+builder.Services.AddScoped<api.Interfaces.ICategoryInterface, api.Repositories.CategoryRepository>();
+builder.Services.AddScoped<api.Interfaces.ICountryInterface, api.Repositories.CountryRepository>();
+builder.Services.AddScoped<api.Interfaces.IOwnerInterface, api.Repositories.OwnerRepository>();
+builder.Services.AddScoped<api.Interfaces.IReviewerInterface, api.Repositories.ReviewerRepository>();
+builder.Services.AddScoped<api.Interfaces.IReviewInterface, api.Repositories.ReviewRepository>();
 
 var app = builder.Build();
 if (args.Length == 1 && args[0].ToLower() == "seeddata")
