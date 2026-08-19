@@ -42,7 +42,7 @@ namespace api.Controllers
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(PokemonDtos))]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<PokemonDtos>> CreatePokemon([FromBody] PokemonDtos pokemon)
+        public async Task<ActionResult<PokemonDtos>> CreatePokemon([FromBody] PokemonCreateDtos pokemon)
         {
             var createdPokemon = await _pokemonService.CreatePokemon(pokemon);
             if (createdPokemon == null)

@@ -10,7 +10,7 @@ namespace api.Interfaces
     {
         Task<IEnumerable<PokemonResponseDtos>> ListAllPokemons();
         Task<PokemonResponseDtos?> GetPokemonById(int id);
-        Task<PokemonDtos?> CreatePokemon(PokemonDtos pokemon);
+        Task<PokemonDtos?> CreatePokemon(PokemonCreateDtos pokemon);
         Task<PokemonDtos?> UpdatePokemon(int id, PokemonDtos pokemon);
         Task<bool?> DeletePokemon(int id);
     }

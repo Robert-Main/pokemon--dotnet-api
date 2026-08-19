@@ -138,13 +138,13 @@ namespace api.Repositories
             };
         }
 
-        public async Task<PokemonDtos?> CreatePokemon(PokemonDtos pokemon)
+        public async Task<PokemonDtos?> CreatePokemon(PokemonCreateDtos pokemon)
         {
             var newPokemon = new Pokemon
             {
                 Name = pokemon.Name,
                 BirthDate = pokemon.BirthDate,
-                CreatedAt = pokemon.CreatedAt
+                CreatedAt = DateTime.UtcNow
             };
             _context.Pokemons.Add(newPokemon);
             await _context.SaveChangesAsync();
