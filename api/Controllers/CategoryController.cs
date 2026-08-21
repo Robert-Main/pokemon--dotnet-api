@@ -16,7 +16,7 @@ public class CategoryController(ICategoryInterface categoryService) : Controller
         await categoryService.GetCategoryById(id) is { } category ? Ok(new { message = "Category retrieved successfully", data = category }) : NotFound(new { message = "Category not found" });
 
     [HttpPost]
-    public async Task<ActionResult<Category>> CreateCategory(Category category)
+    public async Task<ActionResult<Category>> CreateCategory(CategoryCreateDtos category)
     {
         var created = await categoryService.CreateCategory(category);
         return CreatedAtAction(nameof(GetCategoryById), new { id = created.Id }, new { message = "Category created successfully", data = created });

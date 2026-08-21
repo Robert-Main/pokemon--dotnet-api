@@ -15,7 +15,7 @@ public class PokemonProfileTests
     {
         var config = new MapperConfiguration(cfg =>
         {
-            cfg.AddProfile<PokemonProfile>();
+            cfg.AddMaps(typeof(PokemonProfile).Assembly);
         });
         _mapper = config.CreateMapper();
     }
@@ -26,7 +26,7 @@ public class PokemonProfileTests
         // This test catches missing maps, typos, and circular references at startup
         var config = new MapperConfiguration(cfg =>
         {
-            cfg.AddProfile<PokemonProfile>();
+            cfg.AddMaps(typeof(PokemonProfile).Assembly);
         });
         config.AssertConfigurationIsValid();
     }

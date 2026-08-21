@@ -16,7 +16,7 @@ public class OwnerController(IOwnerInterface ownerService) : ControllerBase
         await ownerService.GetOwnerById(id) is { } owner ? Ok(new { message = "Owner retrieved successfully", data = owner }) : NotFound(new { message = "Owner not found" });
 
     [HttpPost]
-    public async Task<ActionResult<Owner>> CreateOwner(Owner owner)
+    public async Task<ActionResult<Owner>> CreateOwner(OwnerCreateDtos owner)
     {
         var created = await ownerService.CreateOwner(owner);
         return created is null

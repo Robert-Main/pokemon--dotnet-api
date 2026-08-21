@@ -15,7 +15,7 @@ public class ReviewerRepository(DataContext context, IMapper mapper) : IReviewer
     public async Task<Reviewer?> GetReviewerById(int id) =>
         mapper.Map<Reviewer>(await context.Reviewers.AsNoTracking().FirstOrDefaultAsync(reviewer => reviewer.Id == id));
 
-    public async Task<Reviewer> CreateReviewer(Reviewer reviewer)
+    public async Task<Reviewer> CreateReviewer(ReviewerCreateDtos reviewer)
     {
         var entity = mapper.Map<ReviewerModel>(reviewer);
         context.Reviewers.Add(entity);

@@ -6,7 +6,7 @@ public interface ICategoryInterface
 {
     Task<IEnumerable<Category>> ListAllCategories();
     Task<Category?> GetCategoryById(int id);
-    Task<Category> CreateCategory(Category category);
+    Task<Category> CreateCategory(CategoryCreateDtos category);
     Task<Category?> UpdateCategory(int id, Category category);
     Task<bool?> DeleteCategory(int id);
 }

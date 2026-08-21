@@ -15,7 +15,7 @@ public class ReviewRepository(DataContext context, IMapper mapper) : IReviewInte
     public async Task<Review?> GetReviewById(int id) =>
         mapper.Map<Review>(await context.Reviews.AsNoTracking().FirstOrDefaultAsync(review => review.Id == id));
 
-    public async Task<Review?> CreateReview(Review review)
+    public async Task<Review?> CreateReview(ReviewCreateDtos review)
     {
         if (!await ReferencesExist(review)) return null;
         var entity = mapper.Map<ReviewModel>(review);
@@ -42,6 +42,10 @@ public class ReviewRepository(DataContext context, IMapper mapper) : IReviewInte
         await context.SaveChangesAsync();
         return true;
     }
+
+    private async Task<bool> ReferencesExist(ReviewCreateDtos review) =>
+        await context.Reviewers.AnyAsync(reviewer => reviewer.Id == review.ReviewerId)
+        && await context.Pokemons.AnyAsync(pokemon => pokemon.Id == review.PokemonId);
 
     private async Task<bool> ReferencesExist(Review review) =>
         await context.Reviewers.AnyAsync(reviewer => reviewer.Id == review.ReviewerId)

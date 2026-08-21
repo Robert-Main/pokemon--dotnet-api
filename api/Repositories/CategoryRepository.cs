@@ -15,7 +15,7 @@ public class CategoryRepository(DataContext context, IMapper mapper) : ICategory
     public async Task<Category?> GetCategoryById(int id) =>
         mapper.Map<Category>(await context.Categories.AsNoTracking().FirstOrDefaultAsync(category => category.Id == id));
 
-    public async Task<Category> CreateCategory(Category category)
+    public async Task<Category> CreateCategory(CategoryCreateDtos category)
     {
         var entity = mapper.Map<CategoryModel>(category);
         context.Categories.Add(entity);

@@ -16,7 +16,7 @@ public class ReviewerController(IReviewerInterface reviewerService) : Controller
         await reviewerService.GetReviewerById(id) is { } reviewer ? Ok(new { message = "Reviewer retrieved successfully", data = reviewer }) : NotFound(new { message = "Reviewer not found" });
 
     [HttpPost]
-    public async Task<ActionResult<Reviewer>> CreateReviewer(Reviewer reviewer)
+    public async Task<ActionResult<Reviewer>> CreateReviewer(ReviewerCreateDtos reviewer)
     {
         var created = await reviewerService.CreateReviewer(reviewer);
         return CreatedAtAction(nameof(GetReviewerById), new { id = created.Id }, new { message = "Reviewer created successfully", data = created });

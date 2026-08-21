@@ -15,7 +15,7 @@ public class OwnerRepository(DataContext context, IMapper mapper) : IOwnerInterf
     public async Task<Owner?> GetOwnerById(int id) =>
         mapper.Map<Owner>(await context.Owners.AsNoTracking().Include(owner => owner.Country).FirstOrDefaultAsync(owner => owner.Id == id));
 
-    public async Task<Owner?> CreateOwner(Owner owner)
+    public async Task<Owner?> CreateOwner(OwnerCreateDtos owner)
     {
         if (owner.CountryId is not null && !await context.Countries.AnyAsync(country => country.Id == owner.CountryId)) return null;
         var entity = mapper.Map<OwnerModel>(owner);

@@ -16,7 +16,7 @@ public class CountryController(ICountryInterface countryService) : ControllerBas
         await countryService.GetCountryById(id) is { } country ? Ok(new { message = "Country retrieved successfully", data = country }) : NotFound(new { message = "Country not found" });
 
     [HttpPost]
-    public async Task<ActionResult<Country>> CreateCountry(Country country)
+    public async Task<ActionResult<Country>> CreateCountry(CountryCreateDtos country)
     {
         var created = await countryService.CreateCountry(country);
         return CreatedAtAction(nameof(GetCountryById), new { id = created.Id }, new { message = "Country created successfully", data = created });

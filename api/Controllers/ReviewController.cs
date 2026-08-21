@@ -16,7 +16,7 @@ public class ReviewController(IReviewInterface reviewService) : ControllerBase
         await reviewService.GetReviewById(id) is { } review ? Ok(new { message = "Review retrieved successfully", data = review }) : NotFound(new { message = "Review not found" });
 
     [HttpPost]
-    public async Task<ActionResult<Review>> CreateReview(Review review)
+    public async Task<ActionResult<Review>> CreateReview(ReviewCreateDtos review)
     {
         var created = await reviewService.CreateReview(review);
         return created is null

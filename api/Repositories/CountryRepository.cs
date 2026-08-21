@@ -15,7 +15,7 @@ public class CountryRepository(DataContext context, IMapper mapper) : ICountryIn
     public async Task<Country?> GetCountryById(int id) =>
         mapper.Map<Country>(await context.Countries.AsNoTracking().FirstOrDefaultAsync(country => country.Id == id));
 
-    public async Task<Country> CreateCountry(Country country)
+    public async Task<Country> CreateCountry(CountryCreateDtos country)
     {
         var entity = mapper.Map<CountryModel>(country);
         context.Countries.Add(entity);
