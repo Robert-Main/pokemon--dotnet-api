@@ -13,7 +13,6 @@ namespace api.Data
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
-
         public DbSet<Pokemon> Pokemons { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Reviewer> Reviewers { get; set; }
