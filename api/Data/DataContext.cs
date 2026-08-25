@@ -55,6 +55,5 @@ namespace api.Data
                 .WithMany(o => o.PokemonOwners)
                 .HasForeignKey(po => po.OwnerId);
         }
-
     }
 }
